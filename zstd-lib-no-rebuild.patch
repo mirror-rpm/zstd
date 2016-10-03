@@ -1,0 +1,26 @@
+Proposed upstream at https://github.com/pixelb/zstd/pull/1
+
+diff -Naur zstd-1.0.0/lib/Makefile zstd-1.0.0.fedora/lib/Makefile
+--- zstd-1.0.0/lib/Makefile	2016-08-31 16:09:10.000000000 +0000
++++ zstd-1.0.0.fedora/lib/Makefile	2016-09-05 11:45:59.449374900 +0000
+@@ -57,9 +57,9 @@
+ 
+ .PHONY: default all clean install uninstall
+ 
+-default: clean libzstd
++default: libzstd
+ 
+-all: clean libzstd
++all: libzstd
+ 
+ libzstd: $(ZSTD_FILES)
+ 	@echo compiling static library
+@@ -89,7 +89,7 @@
+              -e 's|@VERSION@|$(VERSION)|' \
+              $< >$@
+ 
+-install: libzstd libzstd.pc
++install: libzstd.pc
+ 	@install -d -m 755 $(DESTDIR)$(LIBDIR)/pkgconfig/ $(DESTDIR)$(INCLUDEDIR)/
+ 	@install -m 755 libzstd.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_VER)
+ 	@cp -a libzstd.$(SHARED_EXT_MAJOR) $(DESTDIR)$(LIBDIR)

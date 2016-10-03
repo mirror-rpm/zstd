@@ -36,12 +36,14 @@ find -name .gitignore -delete
 %patch0 -p1
 
 %build
+%{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
 for dir in lib programs; do
-  CFLAGS="%{optflags}" LDFLAGS="%{__global_ldflags}" %make_build -C "$dir"
+  CFLAGS="%{optflags}" %make_build -C "$dir"
 done
 
 %check
-CFLAGS="%{optflags}" LDFLAGS="%{__global_ldflags}" make -C tests test-zstd
+%{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
+CFLAGS="%{optflags}" make -C tests test-zstd
 
 %install
 %make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}

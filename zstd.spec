@@ -1,3 +1,11 @@
+# gcc-4.4 is currently too old to compile pzstd
+%if 0%{?fedora} || 0%{?rhel} > 6
+# aarch64 currently gives a segfault in ThreadPool test
+%ifnarch aarch64
+%global with_pzstd 1
+%endif
+%endif
+
 Name:           zstd
 Version:        1.1.0
 Release:        2%{?dist}
@@ -38,7 +46,9 @@ Header files for Zstd library.
 %setup -q
 find -name .gitignore -delete
 %patch0 -p1
+%if 0%{?with_pzstd}
 %patch1 -p1
+%endif
 %patch2 -p1
 
 %build
@@ -46,27 +56,35 @@ find -name .gitignore -delete
 for dir in lib programs; do
   CFLAGS="%{optflags}" %make_build -C "$dir"
 done
+%if 0%{?with_pzstd}
 CXXFLAGS="%{optflags}" %make_build -C 'contrib/pzstd'
+%endif
 
 %check
 %{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
 CFLAGS="%{optflags}" make -C tests test-zstd
+%if 0%{?with_pzstd}
 CFLAGS="%{optflags}" CXXFLAGS="%{optflags}" make -C contrib/pzstd test
+%endif
 
 %install
 %make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
+rm %{buildroot}/%{_libdir}/libzstd.a
+%if 0%{?with_pzstd}
 install -D -m755 contrib/pzstd/pzstd %{buildroot}/usr/bin/pzstd
 install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
-rm %{buildroot}/%{_libdir}/libzstd.a
+%endif
 
 %files
 %doc NEWS README.md
 %{_bindir}/%{name}
+%if 0%{?with_pzstd}
 %{_bindir}/p%{name}
+%{_mandir}/man1/p%{name}.1*
+%endif
 %{_bindir}/un%{name}
 %{_bindir}/%{name}cat
 %{_mandir}/man1/%{name}.1*
-%{_mandir}/man1/p%{name}.1*
 %{_mandir}/man1/un%{name}.1*
 %{_mandir}/man1/%{name}cat.1*
 %license LICENSE PATENTS

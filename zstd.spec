@@ -7,9 +7,12 @@ License:        BSD and MIT
 URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
-# Proposed upstream at https://github.com/facebook/zstd/pull/404
+# https://github.com/facebook/zstd/pull/404
 Patch0:         zstd-lib-no-rebuild.patch
 Patch1:         pzstd.1.patch
+
+# https://github.com/facebook/zstd/pull/406
+Patch2:         pzstd-test-headless.patch
 
 BuildRequires:  gcc gtest-devel
 
@@ -36,6 +39,7 @@ Header files for Zstd library.
 find -name .gitignore -delete
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}

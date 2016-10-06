@@ -1,0 +1,31 @@
+From ca7bbb35b0566ed0c8dfe89d86dcd4009788eca9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?P=C3=A1draig=20Brady?= <P@draigBrady.com>
+Date: Thu, 6 Oct 2016 15:13:10 +0100
+Subject: [PATCH] pzstd: fix test failure on headless build
+
+If I/O is not connected to a terminal
+(like in a package build system for example),
+a portion of the test expected to fail would pass.
+This adjusts the test to not depend on the failure.
+---
+ contrib/pzstd/test/OptionsTest.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/contrib/pzstd/test/OptionsTest.cpp b/contrib/pzstd/test/OptionsTest.cpp
+index e7d4b2b..b624225 100644
+--- a/contrib/pzstd/test/OptionsTest.cpp
++++ b/contrib/pzstd/test/OptionsTest.cpp
+@@ -183,7 +183,9 @@ TEST(Options, GetOutputFile) {
+   {
+     Options options;
+     auto args = makeArray("-o-");
+-    EXPECT_FAILURE(options.parse(args.size(), args.data()));
++    /* This may pass or fail depending on whether std{in,out}
++       are connected to a tty */
++    options.parse(args.size(), args.data());
+     EXPECT_EQ("-", options.getOutputFile(options.inputFiles[0]));
+   }
+   {
+-- 
+2.5.5
+

@@ -1,16 +1,17 @@
 Name:           zstd
 Version:        1.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and MIT
 URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
-# Proposed upstream at https://github.com/pixelb/zstd/pull/1
+# Proposed upstream at https://github.com/facebook/zstd/pull/404
 Patch0:         zstd-lib-no-rebuild.patch
+Patch1:         pzstd.1.patch
 
-BuildRequires:  gcc
+BuildRequires:  gcc gtest-devel
 
 %description
 Zstd, short for Zstandard, is a fast lossless compression algorithm,
@@ -34,27 +35,34 @@ Header files for Zstd library.
 %setup -q
 find -name .gitignore -delete
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
 for dir in lib programs; do
   CFLAGS="%{optflags}" %make_build -C "$dir"
 done
+CXXFLAGS="%{optflags}" %make_build -C 'contrib/pzstd'
 
 %check
 %{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
 CFLAGS="%{optflags}" make -C tests test-zstd
+CFLAGS="%{optflags}" CXXFLAGS="%{optflags}" make -C contrib/pzstd test
 
 %install
 %make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
+install -D -m755 contrib/pzstd/pzstd %{buildroot}/usr/bin/pzstd
+install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 rm %{buildroot}/%{_libdir}/libzstd.a
 
 %files
 %doc NEWS README.md
 %{_bindir}/%{name}
+%{_bindir}/p%{name}
 %{_bindir}/un%{name}
 %{_bindir}/%{name}cat
 %{_mandir}/man1/%{name}.1*
+%{_mandir}/man1/p%{name}.1*
 %{_mandir}/man1/un%{name}.1*
 %{_mandir}/man1/%{name}cat.1*
 %license LICENSE PATENTS
@@ -74,6 +82,9 @@ rm %{buildroot}/%{_libdir}/libzstd.a
 %postun -n lib%{name} -p /sbin/ldconfig
 
 %changelog
+* Thu Oct 6  2016 Pádraig Brady <pbrady@fb.com> 1.1.0-2
+- Add pzstd(1)
+
 * Thu Sep 29 2016 Pádraig Brady <pbrady@fb.com> 1.1.0-1
 - New upstream release
 - Remove examples and static lib

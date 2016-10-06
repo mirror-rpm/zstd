@@ -1,0 +1,16 @@
+--- zstd-1.1.0.orig/programs/zstd.1	2016-09-27 22:15:03.000000000 +0000
++++ zstd-1.1.0.new/programs/zstd.1	2016-10-06 12:25:28.912681891 +0000
+@@ -94,6 +94,13 @@
+  All arguments after -- are treated as files
+ 
+ 
++.SH Parallel Zstd OPTIONS
++Additional options for the pzstd utility
++.TP
++.BR \-p ", " --processes
++ number of threads to use for (de)compression (default:4)
++
++
+ .SH DICTIONARY
+ .PP
+ \fBzstd\fR offers \fIdictionary\fR compression, useful for very small files and messages.

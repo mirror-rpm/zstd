@@ -1,7 +1,8 @@
 # gcc-4.4 is currently too old to compile pzstd
 %if 0%{?fedora} || 0%{?rhel} > 6
-# aarch64 currently gives a segfault in ThreadPool test
-%ifnarch aarch64
+# aarch64 and armv7hl at least currently segfault
+# in ThreadPool test for the pzstd util
+%ifarch %{ix86} x86_64
 %global with_pzstd 1
 %endif
 %endif

@@ -1,6 +1,7 @@
---- zstd-1.1.0.orig/programs/zstd.1	2016-09-27 22:15:03.000000000 +0000
-+++ zstd-1.1.0.new/programs/zstd.1	2016-10-06 12:25:28.912681891 +0000
-@@ -94,6 +94,13 @@
+diff -Naur zstd-1.1.1.orig/programs/zstd.1 zstd-1.1.1/programs/zstd.1
+--- zstd-1.1.1.orig/programs/zstd.1	2016-11-01 18:13:22.000000000 +0000
++++ zstd-1.1.1/programs/zstd.1	2016-11-02 13:01:39.964648652 +0000
+@@ -219,6 +219,13 @@
   All arguments after -- are treated as files
  
  
@@ -11,6 +12,6 @@
 + number of threads to use for (de)compression (default:4)
 +
 +
- .SH DICTIONARY
+ .SH DICTIONARY BUILDER
  .PP
  \fBzstd\fR offers \fIdictionary\fR compression, useful for very small files and messages.

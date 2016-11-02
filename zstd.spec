@@ -8,8 +8,8 @@
 %endif
 
 Name:           zstd
-Version:        1.1.0
-Release:        2%{?dist}
+Version:        1.1.1
+Release:        1%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and MIT
@@ -19,9 +19,6 @@ Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{n
 # https://github.com/facebook/zstd/pull/404
 Patch0:         zstd-lib-no-rebuild.patch
 Patch1:         pzstd.1.patch
-
-# https://github.com/facebook/zstd/pull/406
-Patch2:         pzstd-test-headless.patch
 
 BuildRequires:  gcc gtest-devel
 
@@ -50,7 +47,6 @@ find -name .gitignore -delete
 %if 0%{?with_pzstd}
 %patch1 -p1
 %endif
-%patch2 -p1
 
 %build
 %{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
@@ -58,14 +54,14 @@ for dir in lib programs; do
   CFLAGS="%{optflags}" %make_build -C "$dir"
 done
 %if 0%{?with_pzstd}
-CXXFLAGS="%{optflags}" %make_build -C 'contrib/pzstd'
+CFLAGS="%{optflags}" CXXFLAGS="%{optflags} -std=c++11" %make_build -C 'contrib/pzstd'
 %endif
 
 %check
 %{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
 CFLAGS="%{optflags}" make -C tests test-zstd
 %if 0%{?with_pzstd}
-CFLAGS="%{optflags}" CXXFLAGS="%{optflags}" make -C contrib/pzstd test
+CFLAGS="%{optflags}" CXXFLAGS="%{optflags} -std=c++11" make -C contrib/pzstd test
 %endif
 
 %install
@@ -98,6 +94,7 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %{_includedir}/zbuff.h
 %{_includedir}/zdict.h
 %{_includedir}/zstd.h
+%{_includedir}/zstd_errors.h
 %{_libdir}/pkgconfig/libzstd.pc
 %{_libdir}/libzstd.so
 
@@ -105,6 +102,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %postun -n lib%{name} -p /sbin/ldconfig
 
 %changelog
+* Wed Nov 02 2016 Pádraig Brady <pbrady@redhat.com> - 1.1.1-1
+- Latest upstream
+
 * Thu Oct 6  2016 Pádraig Brady <pbrady@fb.com> 1.1.0-2
 - Add pzstd(1)
 

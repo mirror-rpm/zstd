@@ -9,7 +9,7 @@
 
 Name:           zstd
 Version:        1.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and MIT
@@ -102,6 +102,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %postun -n lib%{name} -p /sbin/ldconfig
 
 %changelog
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Wed Nov 02 2016 Pádraig Brady <pbrady@redhat.com> - 1.1.1-1
 - Latest upstream
 

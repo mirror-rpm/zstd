@@ -8,17 +8,16 @@
 %endif
 
 Name:           zstd
-Version:        1.1.1
-Release:        2%{?dist}
+Version:        1.1.3
+Release:        1%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and MIT
 URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
-# https://github.com/facebook/zstd/pull/404
-Patch0:         zstd-lib-no-rebuild.patch
 Patch1:         pzstd.1.patch
+Patch2:         pzstd-warning.patch
 
 BuildRequires:  gcc gtest-devel
 
@@ -43,9 +42,9 @@ Header files for Zstd library.
 %prep
 %setup -q
 find -name .gitignore -delete
-%patch0 -p1
 %if 0%{?with_pzstd}
 %patch1 -p1
+%patch2 -p1
 %endif
 
 %build
@@ -66,6 +65,10 @@ CFLAGS="%{optflags}" CXXFLAGS="%{optflags} -std=c++11" make -C contrib/pzstd tes
 
 %install
 %make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
+# Remove undocumented wrappers of minimal use
+rm %{buildroot}/%{_bindir}/%{name}less
+rm %{buildroot}/%{_bindir}/%{name}grep
+# Don't install the static lib
 rm %{buildroot}/%{_libdir}/libzstd.a
 %if 0%{?with_pzstd}
 install -D -m755 contrib/pzstd/pzstd %{buildroot}/usr/bin/pzstd
@@ -102,6 +105,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %postun -n lib%{name} -p /sbin/ldconfig
 
 %changelog
+* Mon Mar 06 2017 Pádraig Brady <P@draigBrady.com> - 1.1.3-1
+- Latest upstream
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 

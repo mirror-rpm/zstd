@@ -8,7 +8,7 @@
 %endif
 
 Name:           zstd
-Version:        1.1.3
+Version:        1.2.0
 Release:        1%{?dist}
 Summary:        Zstd compression library
 
@@ -17,7 +17,6 @@ URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 Patch1:         pzstd.1.patch
-Patch2:         pzstd-warning.patch
 
 BuildRequires:  gcc gtest-devel
 
@@ -44,7 +43,6 @@ Header files for Zstd library.
 find -name .gitignore -delete
 %if 0%{?with_pzstd}
 %patch1 -p1
-%patch2 -p1
 %endif
 
 %build
@@ -82,6 +80,7 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %{_bindir}/p%{name}
 %{_mandir}/man1/p%{name}.1*
 %endif
+%{_bindir}/%{name}mt
 %{_bindir}/un%{name}
 %{_bindir}/%{name}cat
 %{_mandir}/man1/%{name}.1*
@@ -105,6 +104,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %postun -n lib%{name} -p /sbin/ldconfig
 
 %changelog
+* Mon May 08 2017 Pádraig Brady <P@draigBrady.com> - 1.2.0-1
+- Latest upstream
+
 * Mon Mar 06 2017 Pádraig Brady <P@draigBrady.com> - 1.1.3-1
 - Latest upstream
 

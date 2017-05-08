@@ -1,10 +1,12 @@
-diff -Naur zstd-1.1.1.orig/programs/zstd.1 zstd-1.1.1/programs/zstd.1
---- zstd-1.1.1.orig/programs/zstd.1	2016-11-01 18:13:22.000000000 +0000
-+++ zstd-1.1.1/programs/zstd.1	2016-11-02 13:01:39.964648652 +0000
-@@ -219,6 +219,13 @@
-  All arguments after -- are treated as files
- 
- 
+diff -Naur zstd-1.2.0.orig/programs/zstd.1 zstd-1.2.0/programs/zstd.1
+--- zstd-1.2.0.orig/programs/zstd.1	2017-05-04 18:18:24.000000000 +0000
++++ zstd-1.2.0/programs/zstd.1	2017-05-08 13:26:25.639811525 +0000
+@@ -162,7 +162,14 @@
+ .TP
+ \fB\-\-\fR
+ All arguments after \fB\-\-\fR are treated as files
+-.
++
 +.SH Parallel Zstd OPTIONS
 +Additional options for the pzstd utility
 +.TP
@@ -12,6 +14,6 @@ diff -Naur zstd-1.1.1.orig/programs/zstd.1 zstd-1.1.1/programs/zstd.1
 + number of threads to use for (de)compression (default:4)
 +
 +
- .SH DICTIONARY BUILDER
- .PP
- \fBzstd\fR offers \fIdictionary\fR compression, useful for very small files and messages.
+ .SH "DICTIONARY BUILDER"
+ \fBzstd\fR offers \fIdictionary\fR compression, useful for very small files and messages\. It\'s possible to train \fBzstd\fR with some samples, the result of which is saved into a file called a \fBdictionary\fR\. Then during compression and decompression, reference the same dictionary\. It will improve compression ratio of small files\. Typical gains range from 10% (at 64KB) to x5 better (at <1KB)\.
+ .

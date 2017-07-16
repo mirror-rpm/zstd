@@ -8,7 +8,7 @@
 %endif
 
 Name:           zstd
-Version:        1.2.0
+Version:        1.3.0
 Release:        1%{?dist}
 Summary:        Zstd compression library
 
@@ -104,6 +104,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %postun -n lib%{name} -p /sbin/ldconfig
 
 %changelog
+* Sun Jul 16 2017 Pádraig Brady <P@draigBrady.com> - 1.3.0-1
+- Latest upstream
+
 * Mon May 08 2017 Pádraig Brady <P@draigBrady.com> - 1.2.0-1
 - Latest upstream
 

@@ -8,11 +8,11 @@
 %endif
 
 Name:           zstd
-Version:        1.3.0
-Release:        3%{?dist}
+Version:        1.3.1
+Release:        1%{?dist}
 Summary:        Zstd compression library
 
-License:        BSD and MIT
+License:        BSD and GPLv2
 URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
@@ -86,11 +86,11 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %{_mandir}/man1/%{name}.1*
 %{_mandir}/man1/un%{name}.1*
 %{_mandir}/man1/%{name}cat.1*
-%license LICENSE PATENTS
+%license LICENSE
 
 %files -n lib%{name}
 %{_libdir}/libzstd.so.*
-%license LICENSE PATENTS
+%license LICENSE
 
 %files -n lib%{name}-devel
 %{_includedir}/zbuff.h
@@ -104,6 +104,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %postun -n lib%{name} -p /sbin/ldconfig
 
 %changelog
+* Mon Aug 21 2017 Pádraig Brady <P@draigBrady.com> - 1.3.1-1
+- Latest upstream
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 

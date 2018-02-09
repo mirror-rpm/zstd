@@ -9,7 +9,7 @@
 
 Name:           zstd
 Version:        1.3.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -103,6 +103,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
 * Fri Feb 02 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.3.3-2
 - Switch to %%ldconfig_scriptlets
 

@@ -75,13 +75,13 @@ make -C contrib/pzstd test
 %install
 %make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
 # Remove undocumented wrappers of minimal use
-rm %{buildroot}/%{_bindir}/%{name}less
-rm %{buildroot}/%{_bindir}/%{name}grep
+rm %{buildroot}%{_bindir}/%{name}less
+rm %{buildroot}%{_bindir}/%{name}grep
 # Don't install the static lib
-rm %{buildroot}/%{_libdir}/libzstd.a
+rm %{buildroot}%{_libdir}/libzstd.a
 %if %{with pzstd}
-install -D -m755 contrib/pzstd/pzstd %{buildroot}/usr/bin/pzstd
-install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
+install -D -m755 contrib/pzstd/pzstd %{buildroot}%{_bindir}/pzstd
+install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %endif
 
 %files

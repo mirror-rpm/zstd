@@ -1,9 +1,13 @@
+%if 0%{?rhel} && 0%{?rhel} <= 6
 # gcc-4.4 is currently too old to compile pzstd
-%if 0%{?fedora} || 0%{?rhel} > 6
+%bcond_with pzstd
+%else
+%ifarch %{ix86} x86_64
+%bcond_without pzstd
+%else
 # aarch64 and armv7hl at least currently segfault
 # in ThreadPool test for the pzstd util
-%ifarch %{ix86} x86_64
-%global with_pzstd 1
+%bcond_with pzstd
 %endif
 %endif
 
@@ -19,7 +23,7 @@ Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{n
 Patch1:         pzstd.1.patch
 
 BuildRequires:  gcc gtest-devel
-%if 0%{?with_pzstd}
+%if %{with pzstd}
 BuildRequires:  gcc-c++
 %endif
 
@@ -44,7 +48,7 @@ Header files for Zstd library.
 %prep
 %setup -q
 find -name .gitignore -delete
-%if 0%{?with_pzstd}
+%if %{with pzstd}
 %patch1 -p1
 %endif
 
@@ -54,7 +58,7 @@ export LDFLAGS="$RPM_LD_FLAGS"
 for dir in lib programs; do
   %make_build -C "$dir"
 done
-%if 0%{?with_pzstd}
+%if %{with pzstd}
 export CXXFLAGS="$RPM_OPT_FLAGS -std=c++11"
 %make_build -C contrib/pzstd
 %endif
@@ -63,7 +67,7 @@ export CXXFLAGS="$RPM_OPT_FLAGS -std=c++11"
 export CFLAGS="$RPM_OPT_FLAGS"
 export LDFLAGS="$RPM_LD_FLAGS"
 make -C tests test-zstd
-%if 0%{?with_pzstd}
+%if %{with pzstd}
 export CXXFLAGS="$RPM_OPT_FLAGS -std=c++11"
 make -C contrib/pzstd test
 %endif
@@ -75,7 +79,7 @@ rm %{buildroot}/%{_bindir}/%{name}less
 rm %{buildroot}/%{_bindir}/%{name}grep
 # Don't install the static lib
 rm %{buildroot}/%{_libdir}/libzstd.a
-%if 0%{?with_pzstd}
+%if %{with pzstd}
 install -D -m755 contrib/pzstd/pzstd %{buildroot}/usr/bin/pzstd
 install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %endif
@@ -83,7 +87,7 @@ install -D -m644 programs/%{name}.1 %{buildroot}/%{_mandir}/man1/p%{name}.1
 %files
 %doc NEWS README.md
 %{_bindir}/%{name}
-%if 0%{?with_pzstd}
+%if %{with pzstd}
 %{_bindir}/p%{name}
 %{_mandir}/man1/p%{name}.1*
 %endif

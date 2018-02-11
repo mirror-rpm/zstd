@@ -97,11 +97,11 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %{_mandir}/man1/%{name}.1*
 %{_mandir}/man1/un%{name}.1*
 %{_mandir}/man1/%{name}cat.1*
-%license LICENSE
+%license COPYING LICENSE
 
 %files -n lib%{name}
 %{_libdir}/libzstd.so.*
-%license LICENSE
+%license COPYING LICENSE
 
 %files -n lib%{name}-devel
 %{_includedir}/zbuff.h

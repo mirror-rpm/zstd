@@ -49,19 +49,23 @@ find -name .gitignore -delete
 %endif
 
 %build
-%{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
+export CFLAGS="$RPM_OPT_FLAGS"
+export LDFLAGS="$RPM_LD_FLAGS"
 for dir in lib programs; do
-  CFLAGS="%{optflags}" %make_build -C "$dir"
+  %make_build -C "$dir"
 done
 %if 0%{?with_pzstd}
-CFLAGS="%{optflags}" CXXFLAGS="%{optflags} -std=c++11" %make_build -C 'contrib/pzstd'
+export CXXFLAGS="$RPM_OPT_FLAGS -std=c++11"
+%make_build -C contrib/pzstd
 %endif
 
 %check
-%{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;}
-CFLAGS="%{optflags}" make -C tests test-zstd
+export CFLAGS="$RPM_OPT_FLAGS"
+export LDFLAGS="$RPM_LD_FLAGS"
+make -C tests test-zstd
 %if 0%{?with_pzstd}
-CFLAGS="%{optflags}" CXXFLAGS="%{optflags} -std=c++11" make -C contrib/pzstd test
+export CXXFLAGS="$RPM_OPT_FLAGS -std=c++11"
+make -C contrib/pzstd test
 %endif
 
 %install

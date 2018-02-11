@@ -19,6 +19,9 @@ Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{n
 Patch1:         pzstd.1.patch
 
 BuildRequires:  gcc gtest-devel
+%if 0%{?with_pzstd}
+BuildRequires:  gcc-c++
+%endif
 
 %description
 Zstd, short for Zstandard, is a fast lossless compression algorithm,

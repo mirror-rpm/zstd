@@ -12,8 +12,8 @@
 %endif
 
 Name:           zstd
-Version:        1.3.5
-Release:        2%{?dist}
+Version:        1.3.6
+Release:        1%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -21,7 +21,6 @@ URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 Patch1:         pzstd.1.patch
-Patch2:         zstd-l-stdin.patch
 
 BuildRequires:  gcc gtest-devel
 %if %{with pzstd}
@@ -52,7 +51,6 @@ find -name .gitignore -delete
 %if %{with pzstd}
 %patch1 -p1
 %endif
-%patch2 -p1
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS"
@@ -116,6 +114,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Mon Oct 08 2018 Pádraig Brady <P@draigBrady.com> - 1.3.6-1
+- Latest upstream
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 

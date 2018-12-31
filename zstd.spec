@@ -12,7 +12,7 @@
 %endif
 
 Name:           zstd
-Version:        1.3.6
+Version:        1.3.8
 Release:        1%{?dist}
 Summary:        Zstd compression library
 
@@ -74,9 +74,6 @@ make -C contrib/pzstd test
 
 %install
 %make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
-# Remove undocumented wrappers of minimal use
-rm %{buildroot}%{_bindir}/%{name}less
-rm %{buildroot}%{_bindir}/%{name}grep
 # Don't install the static lib
 rm %{buildroot}%{_libdir}/libzstd.a
 %if %{with pzstd}
@@ -85,7 +82,7 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %endif
 
 %files
-%doc NEWS README.md
+%doc CHANGELOG README.md
 %{_bindir}/%{name}
 %if %{with pzstd}
 %{_bindir}/p%{name}
@@ -94,9 +91,13 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %{_bindir}/%{name}mt
 %{_bindir}/un%{name}
 %{_bindir}/%{name}cat
+%{_bindir}/%{name}grep
+%{_bindir}/%{name}less
 %{_mandir}/man1/%{name}.1*
 %{_mandir}/man1/un%{name}.1*
 %{_mandir}/man1/%{name}cat.1*
+%{_mandir}/man1/%{name}grep.1*
+%{_mandir}/man1/%{name}less.1*
 %license COPYING LICENSE
 
 %files -n lib%{name}
@@ -114,6 +115,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Mon Dec 31 2018 Pádraig Brady <P@draigBrady.com> - 1.3.8-1
+- Latest upstream
+
 * Mon Oct 08 2018 Pádraig Brady <P@draigBrady.com> - 1.3.6-1
 - Latest upstream
 

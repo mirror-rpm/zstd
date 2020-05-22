@@ -1,10 +1,10 @@
-diff -Naur zstd-1.4.4.orig/programs/zstd.1 zstd-1.4.4/programs/zstd.1
---- zstd-1.4.4.orig/programs/zstd.1	2019-11-04 17:54:32.000000000 +0000
-+++ zstd-1.4.4/programs/zstd.1	2020-01-15 14:25:34.227060058 +0000
-@@ -209,6 +209,14 @@
- .TP
- \fB\-\-\fR
- All arguments after \fB\-\-\fR are treated as files
+diff -Naur zstd-1.4.5.orig/programs/zstd.1 zstd-1.4.5/programs/zstd.1
+--- zstd-1.4.5.orig/programs/zstd.1	2020-05-22 05:04:00.000000000 +0000
++++ zstd-1.4.5/programs/zstd.1	2020-05-22 13:01:37.443798417 +0000
+@@ -202,6 +202,14 @@
+ .
+ .IP "\(bu" 4
+ \fB\-\-\fR: All arguments after \fB\-\-\fR are treated as files
 +
 +.SH Parallel Zstd OPTIONS
 +Additional options for the pzstd utility
@@ -14,5 +14,5 @@ diff -Naur zstd-1.4.4.orig/programs/zstd.1 zstd-1.4.4/programs/zstd.1
 +
 +
  .
- .SS "Restricted usage of Environment Variables"
- Using environment variables to set parameters has security implications\. Therefore, this avenue is intentionally restricted\. Only \fBZSTD_CLEVEL\fR is supported currently, for setting compression level\. \fBZSTD_CLEVEL\fR can be used to set the level between 1 and 19 (the "normal" range)\. If the value of \fBZSTD_CLEVEL\fR is not a valid integer, it will be ignored with a warning message\. \fBZSTD_CLEVEL\fR just replaces the default compression level (\fB3\fR)\. It can be overridden by corresponding command line arguments\.
+ .IP "" 0
+ .

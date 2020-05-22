@@ -12,8 +12,8 @@
 %endif
 
 Name:           zstd
-Version:        1.4.4
-Release:        3%{?dist}
+Version:        1.4.5
+Release:        1%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -122,6 +122,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Fri May 22 2020 Pádraig Brady <P@draigBrady.com> - 1.4.5-1
+- Latest upstream
+
 * Fri May 22 2020 Avi Kivity <avi@scylladb.com> - 1.4.4-3
 - Added static library subpackage
 

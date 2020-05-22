@@ -13,7 +13,7 @@
 
 Name:           zstd
 Version:        1.4.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -41,9 +41,15 @@ Zstandard compression shared library.
 Summary:        Header files for Zstd library
 Requires:       lib%{name}%{?_isa} = %{version}-%{release}
 
+%package -n lib%{name}-static
+Summary:        Static variant of the Zstd library
+Requires:       lib%{name}-devel = %{version}-%{release}
+
 %description -n lib%{name}-devel
 Header files for Zstd library.
 
+%description -n lib%{name}-static
+Static variant of the Zstd library.
 
 %prep
 %setup -q
@@ -74,8 +80,6 @@ make -C contrib/pzstd test
 
 %install
 %make_install PREFIX=%{_prefix} LIBDIR=%{_libdir}
-# Don't install the static lib
-rm %{buildroot}%{_libdir}/libzstd.a
 %if %{with pzstd}
 install -D -m755 contrib/pzstd/pzstd %{buildroot}%{_bindir}/pzstd
 install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
@@ -112,9 +116,15 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %{_libdir}/pkgconfig/libzstd.pc
 %{_libdir}/libzstd.so
 
+%files -n lib%{name}-static
+%{_libdir}/libzstd.a
+
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Fri May 22 2020 Avi Kivity <avi@scylladb.com> - 1.4.4-3
+- Added static library subpackage
+
 * Fri Jan 31 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 

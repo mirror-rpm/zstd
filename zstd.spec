@@ -13,7 +13,7 @@
 
 Name:           zstd
 Version:        1.4.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -21,6 +21,7 @@ URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 Patch1:         pzstd.1.patch
+Patch2:         lib-make.patch
 
 BuildRequires:  gcc gtest-devel
 %if %{with pzstd}
@@ -57,6 +58,7 @@ find -name .gitignore -delete
 %if %{with pzstd}
 %patch1 -p1
 %endif
+%patch2 -p1
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS"
@@ -122,6 +124,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Fri May 25 2020 Pádraig Brady <P@draigBrady.com> - 1.4.5-2
+- Build shared library with correct compiler flags
+
 * Fri May 22 2020 Pádraig Brady <P@draigBrady.com> - 1.4.5-1
 - Latest upstream
 

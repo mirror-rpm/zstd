@@ -1,38 +1,20 @@
-From 66db79bbb0977bea7023000dca6211c2cacf9a07 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?P=C3=A1draig=20Brady?= <P@draigBrady.com>
-Date: Mon, 25 May 2020 13:16:31 +0100
-Subject: [PATCH] fix generalization of pattern rules in lib/Makefile
-
-This was introduced in v1.4.4-383-gf77fd5ce
-and results in the default rule in lib/ doing nothing.
----
- lib/Makefile | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/lib/Makefile b/lib/Makefile
-index e6213ac8..de437a98 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -221,14 +221,14 @@ libzstd : $(LIBZSTD)
+diff -Naur zstd-1.4.5.orig/lib/Makefile zstd-1.4.5/lib/Makefile
+--- zstd-1.4.5.orig/lib/Makefile	2020-05-22 05:04:00.000000000 +0000
++++ zstd-1.4.5/lib/Makefile	2020-05-25 14:11:28.947300726 +0000
+@@ -220,13 +220,14 @@
+ .PHONY: lib
  lib : libzstd.a libzstd
  
- .PHONY: lib-mt
--%-mt : CPPFLAGS += -DZSTD_MULTITHREAD
--%-mt : LDFLAGS  += -pthread
--%-mt : %
-+% : CPPFLAGS += -DZSTD_MULTITHREAD
-+% : LDFLAGS  += -pthread
-+% : lib
+-.PHONY: lib-mt
++# note : do not define lib-mt or lib-release as .PHONY
++# make does not consider implicit pattern rule for .PHONY target
++
+ %-mt : CPPFLAGS += -DZSTD_MULTITHREAD
+ %-mt : LDFLAGS  += -pthread
+ %-mt : %
  	@echo multi-threading build completed
  
- .PHONY: lib-release
--%-release : DEBUGFLAGS :=
--%-release : %
-+% : DEBUGFLAGS :=
-+% : lib
+-.PHONY: lib-release
+ %-release : DEBUGFLAGS :=
+ %-release : %
  	@echo release build completed
- 
- 
--- 
-2.26.2
-

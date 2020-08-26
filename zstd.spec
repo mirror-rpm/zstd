@@ -13,7 +13,7 @@
 
 Name:           zstd
 Version:        1.4.5
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -66,7 +66,7 @@ export LDFLAGS="$RPM_LD_FLAGS"
 %make_build -C lib lib-mt
 %make_build -C programs
 %if %{with pzstd}
-export CXXFLAGS="$RPM_OPT_FLAGS -std=c++11"
+export CXXFLAGS="$RPM_OPT_FLAGS"
 %make_build -C contrib/pzstd
 %endif
 
@@ -75,7 +75,7 @@ export CFLAGS="$RPM_OPT_FLAGS"
 export LDFLAGS="$RPM_LD_FLAGS"
 make -C tests test-zstd
 %if %{with pzstd}
-export CXXFLAGS="$RPM_OPT_FLAGS -std=c++11"
+export CXXFLAGS="$RPM_OPT_FLAGS"
 make -C contrib/pzstd test
 %endif
 
@@ -123,6 +123,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Wed Aug 26 2020 Jeff Law <law@redhat.com> - 1.4.5-6
+- Do not force C++11 mode
+
 * Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.5-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 

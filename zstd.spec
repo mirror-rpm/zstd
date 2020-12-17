@@ -12,8 +12,8 @@
 %endif
 
 Name:           zstd
-Version:        1.4.5
-Release:        6%{?dist}
+Version:        1.4.7
+Release:        1%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -21,7 +21,6 @@ URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 Patch1:         pzstd.1.patch
-Patch2:         lib-make.patch
 
 BuildRequires:  gcc gtest-devel
 %if %{with pzstd}
@@ -58,7 +57,6 @@ find -name .gitignore -delete
 %if %{with pzstd}
 %patch1 -p1
 %endif
-%patch2 -p1
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS"
@@ -110,7 +108,6 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %license COPYING LICENSE
 
 %files -n lib%{name}-devel
-%{_includedir}/zbuff.h
 %{_includedir}/zdict.h
 %{_includedir}/zstd.h
 %{_includedir}/zstd_errors.h
@@ -123,6 +120,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Thu Dec 17 2020 Pádraig Brady <P@draigBrady.com> - 1.4.7-1
+- Latest upstream
+
 * Wed Aug 26 2020 Jeff Law <law@redhat.com> - 1.4.5-6
 - Do not force C++11 mode
 

@@ -1,7 +1,7 @@
-diff -Naur zstd-1.4.5.orig/programs/zstd.1 zstd-1.4.5/programs/zstd.1
---- zstd-1.4.5.orig/programs/zstd.1	2020-05-22 05:04:00.000000000 +0000
-+++ zstd-1.4.5/programs/zstd.1	2020-05-22 13:01:37.443798417 +0000
-@@ -202,6 +202,14 @@
+diff -Naur zstd-1.4.7.orig/programs/zstd.1 zstd-1.4.7/programs/zstd.1
+--- zstd-1.4.7.orig/programs/zstd.1	2020-12-16 23:00:18.000000000 +0000
++++ zstd-1.4.7/programs/zstd.1	2020-12-17 15:15:22.586152398 +0000
+@@ -208,6 +208,14 @@
  .
  .IP "\(bu" 4
  \fB\-\-\fR: All arguments after \fB\-\-\fR are treated as files

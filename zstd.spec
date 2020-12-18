@@ -21,6 +21,7 @@ URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 Patch1:         pzstd.1.patch
+Patch2:         alignment.patch
 
 BuildRequires:  gcc gtest-devel
 %if %{with pzstd}
@@ -57,6 +58,7 @@ find -name .gitignore -delete
 %if %{with pzstd}
 %patch1 -p1
 %endif
+%patch2 -p1
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS"

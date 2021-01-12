@@ -23,6 +23,7 @@ Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{n
 Patch1:         pzstd.1.patch
 Patch2:         alignment.patch
 
+BuildRequires: make
 BuildRequires:  gcc gtest-devel
 %if %{with pzstd}
 BuildRequires:  gcc-c++

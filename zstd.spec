@@ -13,7 +13,7 @@
 
 Name:           zstd
 Version:        1.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -121,6 +121,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Sun May 16 2021 Pádraig Brady <P@draigBrady.com> - 1.5.0-2
 - Latest upstream
 

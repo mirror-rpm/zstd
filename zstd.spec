@@ -4,10 +4,12 @@
 %else
 %ifarch %{ix86} x86_64
 %bcond_without pzstd
+%bcond_without asm
 %else
 # aarch64 and armv7hl at least currently segfault
 # in ThreadPool test for the pzstd util
 %bcond_with pzstd
+%bcond_with asm
 %endif
 %endif
 
@@ -22,11 +24,12 @@ Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{n
 
 Patch1:         pzstd.1.patch
 
-BuildRequires: make
+BuildRequires:  make
 BuildRequires:  gcc gtest-devel
 %if %{with pzstd}
 BuildRequires:  gcc-c++
 %endif
+BuildRequires:  execstack
 
 %description
 Zstd, short for Zstandard, is a fast lossless compression algorithm,
@@ -62,14 +65,16 @@ find -name .gitignore -delete
 %build
 export CFLAGS="$RPM_OPT_FLAGS"
 export LDFLAGS="$RPM_LD_FLAGS"
-%make_build -C lib lib-mt
-%make_build -C programs
+%make_build -C lib lib-mt %{!?with_asm:ZSTD_NO_ASM=1}
+%make_build -C programs %{!?with_asm:ZSTD_NO_ASM=1}
 %if %{with pzstd}
 export CXXFLAGS="$RPM_OPT_FLAGS"
-%make_build -C contrib/pzstd
+%make_build -C contrib/pzstd %{!?with_asm:ZSTD_NO_ASM=1}
 %endif
 
 %check
+execstack lib/libzstd.so.1
+
 export CFLAGS="$RPM_OPT_FLAGS"
 export LDFLAGS="$RPM_LD_FLAGS"
 make -C tests test-zstd
@@ -121,6 +126,10 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Tue Dec 28 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.5.1-1
+- Disable amd64 assembly on non-intel architectures (#2035802):
+  this should avoid the issue where an executable stack is created.
+
 * Wed Dec 22 2021 Pádraig Brady <P@draigBrady.com> - 1.5.1-1
 - Latest upstream
 

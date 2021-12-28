@@ -15,7 +15,7 @@
 
 Name:           zstd
 Version:        1.5.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -126,7 +126,7 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
-* Tue Dec 28 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.5.1-1
+* Tue Dec 28 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.5.1-2
 - Disable amd64 assembly on non-intel architectures (#2035802):
   this should avoid the issue where an executable stack is created.
 

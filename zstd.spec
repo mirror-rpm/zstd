@@ -4,18 +4,25 @@
 %else
 %ifarch %{ix86} x86_64
 %bcond_without pzstd
-%bcond_without asm
 %else
 # aarch64 and armv7hl at least currently segfault
 # in ThreadPool test for the pzstd util
 %bcond_with pzstd
-%bcond_with asm
 %endif
+%endif
+
+%ifarch x86_64
+%bcond_without asm
+%else
+# Disable asm to ensure non excutable stack
+# used on archs where asm not actually used
+# https://github.com/facebook/zstd/issues/2963
+%bcond_with asm
 %endif
 
 Name:           zstd
 Version:        1.5.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -126,6 +133,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Wed Dec 29 2021 Pádraig Brady <P@draigBrady.com> - 1.5.1-3
+- Avoid executable stack on i686 also.
+
 * Tue Dec 28 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.5.1-2
 - Disable amd64 assembly on non-intel architectures (#2035802):
   this should avoid the issue where an executable stack is created.

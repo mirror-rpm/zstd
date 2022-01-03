@@ -22,7 +22,7 @@
 
 Name:           zstd
 Version:        1.5.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -72,6 +72,8 @@ find -name .gitignore -delete
 %build
 export CFLAGS="$RPM_OPT_FLAGS"
 export LDFLAGS="$RPM_LD_FLAGS"
+export PREFIX="%{_prefix}"
+export LIBDIR="%{_libdir}"
 %make_build -C lib lib-mt %{!?with_asm:ZSTD_NO_ASM=1}
 %make_build -C programs %{!?with_asm:ZSTD_NO_ASM=1}
 %if %{with pzstd}
@@ -133,6 +135,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Mon Jan 03 2022 Pádraig Brady <P@draigBrady.com> - 1.5.1-4
+- Use correct prefix for pkgconfig.
+
 * Wed Dec 29 2021 Pádraig Brady <P@draigBrady.com> - 1.5.1-3
 - Avoid executable stack on i686 also.
 

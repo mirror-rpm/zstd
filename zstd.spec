@@ -1,3 +1,12 @@
+# enable .lz4 support by default
+%bcond_without lz4
+
+# enable .xz/.lzma support by default
+%bcond_without lzma
+
+# enable .gz support by default
+%bcond_without zlib
+
 %if 0%{?rhel} && 0%{?rhel} <= 6
 # gcc-4.4 is currently too old to compile pzstd
 %bcond_with pzstd
@@ -22,7 +31,7 @@
 
 Name:           zstd
 Version:        1.5.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -33,8 +42,17 @@ Patch1:         pzstd.1.patch
 
 BuildRequires:  make
 BuildRequires:  gcc gtest-devel
+%if %{with lz4}
+BuildRequires:  lz4-devel
+%endif
+%if %{with lzma}
+BuildRequires:  xz-devel
+%endif
 %if %{with pzstd}
 BuildRequires:  gcc-c++
+%endif
+%if %{with zlib}
+BuildRequires:  zlib-devel
 %endif
 BuildRequires:  execstack
 
@@ -135,6 +153,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Fri Jan 07 2022 Michel Alexandre Salim <salimma@fedoraproject.org> - 1.5.1-5
+- Enable gz, .xz/.lzma and .lz4 support
+
 * Mon Jan 03 2022 Pádraig Brady <P@draigBrady.com> - 1.5.1-4
 - Use correct prefix for pkgconfig.
 

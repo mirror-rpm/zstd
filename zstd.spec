@@ -31,7 +31,7 @@
 
 Name:           zstd
 Version:        1.5.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -39,6 +39,7 @@ URL:            https://github.com/facebook/zstd
 Source0:        https://github.com/facebook/zstd/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 Patch1:         pzstd.1.patch
+Patch2:         enable-CET.patch
 
 BuildRequires:  make
 BuildRequires:  gcc gtest-devel
@@ -86,6 +87,7 @@ find -name .gitignore -delete
 %if %{with pzstd}
 %patch1 -p1
 %endif
+%patch2 -p1
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS"
@@ -153,6 +155,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Tue Jan 11 2022 Pádraig Brady <P@draigBrady.com> - 1.5.1-6
+- Re-enable CET protections (#2039353)
+
 * Fri Jan 07 2022 Michel Alexandre Salim <salimma@fedoraproject.org> - 1.5.1-5
 - Enable gz, .xz/.lzma and .lz4 support
 

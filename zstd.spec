@@ -1,3 +1,6 @@
+# enable asm implementations by default
+%bcond_without asm
+
 # enable .lz4 support by default
 %bcond_without lz4
 
@@ -20,18 +23,9 @@
 %endif
 %endif
 
-%ifarch x86_64
-%bcond_without asm
-%else
-# Disable asm to ensure non excutable stack
-# used on archs where asm not actually used
-# https://github.com/facebook/zstd/issues/2963
-%bcond_with asm
-%endif
-
 Name:           zstd
-Version:        1.5.1
-Release:        7%{?dist}
+Version:        1.5.2
+Release:        1%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -155,6 +149,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Sat Jan 22 2022 Pádraig Brady <P@draigBrady.com> - 1.5.2-1
+- Latest upstream
+
 * Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.1-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 

@@ -10,22 +10,12 @@
 # enable .gz support by default
 %bcond_without zlib
 
-%if 0%{?rhel} && 0%{?rhel} <= 6
-# gcc-4.4 is currently too old to compile pzstd
-%bcond_with pzstd
-%else
-%ifarch %{ix86} x86_64
+# enable pzstd support by default
 %bcond_without pzstd
-%else
-# aarch64 and armv7hl at least currently segfault
-# in ThreadPool test for the pzstd util
-%bcond_with pzstd
-%endif
-%endif
 
 Name:           zstd
 Version:        1.5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Zstd compression library
 
 License:        BSD and GPLv2
@@ -149,6 +139,9 @@ install -D -m644 programs/%{name}.1 %{buildroot}%{_mandir}/man1/p%{name}.1
 %ldconfig_scriptlets -n lib%{name}
 
 %changelog
+* Thu May 19 2022 Peter Robinson <pbrobinson@fedoraproject.org> - 1.5.2-2
+- ThreadPool segfault fixed so build pzst everywhere
+
 * Sat Jan 22 2022 Pádraig Brady <P@draigBrady.com> - 1.5.2-1
 - Latest upstream
 
